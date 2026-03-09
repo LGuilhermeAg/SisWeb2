@@ -1,0 +1,95 @@
+@gateway=http://localhost:8080
+
+###
+# Users - status (through gateway route /api/users/** -> /users/**)
+GET {{gateway}}/api/users/status
+
+###
+# Users - list
+GET {{gateway}}/api/users
+
+###
+# Users - create (adjust fields if your DTO differs)
+POST {{gateway}}/api/users
+Content-Type: application/json
+
+{
+  "name": "Alice",
+  "email": "alice@example.com",
+  "password": "123456",
+  "city": "Ouro Preto",
+  "creditCardNumber": "4111111111111111",
+  "creditCardNetworkId": null
+}
+
+###
+# Sales - list events
+GET {{gateway}}/events
+
+###
+# Sales - create event
+POST {{gateway}}/events
+Content-Type: application/json
+
+{
+  "description": "Show Test",
+  "type": 2,
+  "date": "2030-01-01T20:00:00",
+  "startSales": "2029-12-01T00:00:00",
+  "endSales": "2029-12-31T23:59:59",
+  "price": 99.9
+}
+
+###
+# Sales - get event by id
+# Replace {{eventId}} after creating an event
+@eventId=00000000-0000-0000-0000-000000000000
+GET {{gateway}}/events/{{eventId}}
+
+###
+# Sales - update event
+PUT {{gateway}}/events/{{eventId}}
+Content-Type: application/json
+
+{
+  "description": "Show Test (updated)"
+}
+
+###
+# Sales - delete event
+DELETE {{gateway}}/events/{{eventId}}
+
+###
+# Sales - list sales
+GET {{gateway}}/sales
+
+###
+# Sales - create sale
+# Replace {{userId}} and {{eventId}} with real UUIDs
+@userId=00000000-0000-0000-0000-000000000000
+POST {{gateway}}/sales
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "eventId": "{{eventId}}"
+}
+
+###
+# Sales - get sale by id
+@saleId=00000000-0000-0000-0000-000000000000
+GET {{gateway}}/sales/{{saleId}}
+
+###
+# Sales - update sale status (1=EM_ABERTO, 2=PAGO, 3=CANCELADO, 4=ESTORNADO)
+PUT {{gateway}}/sales/{{saleId}}
+Content-Type: application/json
+
+{
+  "saleStatus": 2
+}
+
+###
+# Sales - delete sale
+DELETE {{gateway}}/sales/{{saleId}}
+
